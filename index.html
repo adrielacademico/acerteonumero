@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Acerte o Número</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+	<!-- 
+		Algoritmo do jogo:
+		
+		1. Uma função gera um número aleatório de 0 a 100.
+		
+		2. o usuário, através de um input de entrada HTML joga um número,
+		sugerindo ser o número a ser acertado. Obs.: O usuário terá no máximo 3 chances.
+
+		=> Se acertar:
+			informa que o usuário acertou e ganhou o jogo. Exibir também uma imagem de troféu e uma música de vitório - tudo adicionado com JavaScript.
+		
+		==> Se não acertou:
+			informar as chances que o usuário ainda possui e dizer se o número a ser acertado é maior ou menor que o número da última tentativa (criar frases para estimular o usuário).
+			Se as três tentativas acabarem, informar que o usuário perdeu :(.
+	-->
+	<div class="container">
+		<h2>Jogo Acerte o Número</h2>
+		<p><strong>Objetivo:</strong> Este jogo temo o objetivo de ...</p>
+
+		<h3>Informe um número:</h3>
+		<input type="number" id="numeroDoUsuario">
+		<button onclick="jogou()">Jogar!</button>
+	</div>
+
+	<script type="text/javascript">
+
+		//Configurando os áudios para o jogo.
+
+		var choro = new Audio();
+		var aplausos = new Audio();
+		var perto = new Audio();
+		var muito_perto = new Audio();
+		var quase = new Audio();
+		var comecar = new Audio();
+
+		choro.src = "audios/choro.mp3";
+		aplausos.src = "audios/applause02.mp3";
+		perto.src = "audios/applause02.mp3";
+		muito_perto.src = "audios/applause02.mp3";
+		quase.src = "audios/applause02.mp3";
+		comecar.src = "audios/applause02.mp3";
+
+		function choro(){
+			choro.play();
+		}
+
+		function aplausos(){
+			aplausos.play();
+		}
+
+		function perto(){
+			perto.play();
+		}
+
+		function muito_perto(){
+			muito_perto.play();
+		}
+
+		function quase(){
+			quase.play();
+		}
+
+		function comecar(){
+			comecar.play();
+		}
+
+		//fim dos audios.
+
+
+		function imprime(valor){
+			document.write(valor + "<br><br>");
+		}
+
+		//gerando o número a ser acertado:
+		var numeroSecreto = Math.round(Math.random() * 100);
+		imprime(numeroSecreto);
+
+		function jogou(){
+		var numeroDoUsuario = document.getElementById("numeroDoUsuario").value;
+		//imprime(numeroDoUsuario);
+
+		if (numeroDoUsuario == numeroSecreto) {
+			imprime("Acertou!!");
+			efeitoDeSomAoclicarParaExcluir()
+		} else {
+			imprime("Errou....");
+			efeitoDeSomAoclicarParaAdicionar();
+		}
+
+
+
+
+		}
+
+
+
+
+
+
+
+	</script>
+
+</body>
+</html>
