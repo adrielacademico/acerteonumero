@@ -1,0 +1,27 @@
+#imagemInicial {
+	background-image: url("imagens/principal.jpg");
+	background-repeat: no-repeat;
+	background-position: center;
+	height: 350px;
+}
+
+.mensagemAoJogador {
+	padding: 30px;
+	width: 100%;
+	margin:0 auto;
+	background-color: #f4f4f4;
+	text-align: center;
+	display: none;
+}
+
+.numeroSecreto {
+	font-size: 55px;
+	color: green;
+}
+
+.input-tentativas {
+	text-align: center;
+	font-size: 40px;
+	background-color: #f4f4f4;
+	padding: 30px;
+}

@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<title>Acerte o Número</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="jogo.css">
 </head>
 <body>
 	<!-- 
@@ -11,28 +12,51 @@
 		
 		1. Uma função gera um número aleatório de 0 a 100.
 		
-		2. o usuário, através de um input de entrada HTML joga um número,
-		sugerindo ser o número a ser acertado. Obs.: O usuário terá no máximo 3 chances.
+		2. o usuário, através de um input de entrada HTML digita um número, sugerindo ser o número secreto.
 
 		=> Se acertar:
-			informa que o usuário acertou e ganhou o jogo. Exibir também uma imagem de troféu e uma música de vitório - tudo adicionado com JavaScript.
+			informa que o usuário acertou e ganhou o jogo. 
+			Exibir também uma imagem de troféu e uma música de vitória - tudo adicionado com JavaScript.
 		
-		==> Se não acertou:
+		==> Se não acertou: (caso o jogo limite o usuário para mais de uma tentativa)
 			informar as chances que o usuário ainda possui e dizer se o número a ser acertado é maior ou menor que o número da última tentativa (criar frases para estimular o usuário).
 			Se as três tentativas acabarem, informar que o usuário perdeu :(.
 	-->
 	<div class="container">
 		<h2>Jogo Acerte o Número</h2>
-		<p><strong>Objetivo:</strong> Este jogo temo o objetivo de ...</p>
+		<p><strong>Objetivo:</strong> Este jogo temo o objetivo de ... números entre 0 1 20</p>
 
-		<h3>Informe um número:</h3>
-		<input type="number" id="numeroDoUsuario">
-		<button onclick="jogou()">Jogar!</button>
+		<div id="imagemInicial"></div>
+
+		<div class="mensagemAoJogador" id="mensagemAoJogador">
+			<img src="" class="center-block" id="imagemQueSeraExibida">
+			<h2 id="primeiraMensagemParaOJogador"></h2>
+			<h3 id="segundaMensagemParaOJogador"></h3>
+			<button class="btn btn-danger btn-lg center-block" onclick="perdeuJogo()">
+				Desisto de jogar, muito difícil...
+			</button>
+		</div>
 	</div>
 
+	<div class="container-fluid">
+		<div class="input-tentativas">
+			<h3>Informe um número:</h3>
+			<input type="number" id="numeroDoUsuario">
+			<button onclick="jogar()">Jogar!</button>
+		</div>
+			<button class="btn btn-success btn-lg center-block" onclick="recomecarJogo()">
+				Reiniciar o Jogo
+			</button>
+	</div>
+
+	<!-- ações do jogo -->
 	<script type="text/javascript">
 
-		//Configurando os áudios para o jogo.
+		function imprime(valor){
+			document.write(valor + "<br><br>");
+		}
+
+		/*=================== Configurando funções com áudios para o jogo =================*/
 
 		var choro = new Audio();
 		var aplausos = new Audio();
@@ -43,68 +67,111 @@
 
 		choro.src = "audios/choro.mp3";
 		aplausos.src = "audios/applause02.mp3";
-		perto.src = "audios/applause02.mp3";
-		muito_perto.src = "audios/applause02.mp3";
-		quase.src = "audios/applause02.mp3";
-		comecar.src = "audios/applause02.mp3";
+		perto.src = "audios/afundando.mp3";
+		muito_perto.src = "audios/muito_perto.mp3";
+		quase.src = "audios/quase.mp3";
+		comecar.src = "audios/comecar.mp3";
 
-		function choro(){
+		function audioPerdeuJogo(){
 			choro.play();
 		}
 
-		function aplausos(){
+		function audioGanhouJogo(){
 			aplausos.play();
 		}
 
-		function perto(){
+		function audioMaior(){
 			perto.play();
 		}
 
-		function muito_perto(){
+		function audioMenor(){
 			muito_perto.play();
 		}
 
-		function quase(){
+		function audioPerto(){
 			quase.play();
 		}
 
-		function comecar(){
+		function audioComecarJogo(){
 			comecar.play();
 		}
 
-		//fim dos audios.
+		/*======================= fim das funções com áudios para o jogo ====================*/
 
-
-		function imprime(valor){
-			document.write(valor + "<br><br>");
-		}
-
-		//gerando o número a ser acertado:
-		var numeroSecreto = Math.round(Math.random() * 100);
+		/*------------------- GERANDO O NÚMERO SECRETO ENTRE 0 E 20 ----------------------*/
+		
+		var numeroSecreto = Math.round(Math.random() * 20);
 		imprime(numeroSecreto);
 
-		function jogou(){
-		var numeroDoUsuario = document.getElementById("numeroDoUsuario").value;
-		//imprime(numeroDoUsuario);
+		//dando focu e limpando o campo para o usuário jogar novamente.
+		function limpaEntradaInput(){
+			document.getElementById('numeroDoUsuario').value =''; 
+			document.getElementById('numeroDoUsuario').focus();
+		}
 
-		if (numeroDoUsuario == numeroSecreto) {
-			imprime("Acertou!!");
-			efeitoDeSomAoclicarParaExcluir()
-		} else {
-			imprime("Errou....");
-			efeitoDeSomAoclicarParaAdicionar();
+		/*=================== Configurando funções do jogo =================*/
+
+		function ganhouJogo(){
+			document.getElementById("mensagemAoJogador").style.display = "block";
+			document.getElementById("imagemQueSeraExibida").src = "imagens/acertou.gif";
+			document.getElementById("primeiraMensagemParaOJogador").innerHTML = "Parabéns, você acertou!!!";
+			document.getElementById("segundaMensagemParaOJogador").innerHTML = "Conseguiu advinhar o número secreto <span class='numeroSecreto'>" + numeroSecreto + "</span>";
+
+			audioGanhouJogo();
+			limpaEntradaInput();
+		}
+
+		function perdeuJogo(){
+			document.getElementById("mensagemAoJogador").style.display = "block";
+			document.getElementById("imagemQueSeraExibida").src = "imagens/perdeu.gif";
+			document.getElementById("primeiraMensagemParaOJogador").innerHTML = "Que pena, você desistiu e perdeu o jogo...";
+			document.getElementById("segundaMensagemParaOJogador").innerHTML = "O número secreto era <span class='numeroSecreto'>" + numeroSecreto + "</span>";
+			audioPerdeuJogo();
+			limpaEntradaInput();
+		}
+
+		function numeroMuitoPequeno(){
+			document.getElementById("mensagemAoJogador").style.display = "block";
+			document.getElementById("imagemQueSeraExibida").src = "imagens/vamos.gif";
+			document.getElementById("primeiraMensagemParaOJogador").innerHTML = "Seu número é menor que o número secreto";
+			document.getElementById("segundaMensagemParaOJogador").innerHTML = "Tente outro número, vamos lá!";
+			audioMenor();
+			limpaEntradaInput();
+		}
+
+		function numeroMuitoGrande(){
+			document.getElementById("mensagemAoJogador").style.display = "block";
+			document.getElementById("imagemQueSeraExibida").src = "imagens/grande.gif";
+			document.getElementById("primeiraMensagemParaOJogador").innerHTML = "Seu número é maior que o número secreto";
+			document.getElementById("segundaMensagemParaOJogador").innerHTML = "Tente outro número, não desanime!";
+			audioPerto();
+			limpaEntradaInput();
 		}
 
 
+		/*=================== Início funcção Jogar =================*/
 
+		function jogar(){
+
+			//tirando a imagem inicial da tela 
+			document.getElementById("imagemInicial").style.display = "none";
+
+			//pegando o número do usuário
+			var numeroDoUsuario = document.getElementById("numeroDoUsuario").value;
+
+			if (numeroDoUsuario == numeroSecreto) {
+				ganhouJogo();
+			} else if(numeroDoUsuario < numeroSecreto) {
+				numeroMuitoPequeno();
+			} else if(numeroDoUsuario > numeroSecreto) {
+				numeroMuitoGrande();
+			}
 
 		}
 
-
-
-
-
-
+		function recomecarJogo(){
+			location.reload();
+		}
 
 	</script>
 
